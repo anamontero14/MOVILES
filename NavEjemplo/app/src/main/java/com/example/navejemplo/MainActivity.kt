@@ -4,17 +4,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.navejemplo.ui.presentation.FormularioPersona
+import com.example.navejemplo.ui.presentation.PersonaRow
 import com.example.navejemplo.ui.theme.NavEjemploTheme
 
 class MainActivity : ComponentActivity() {
@@ -23,16 +17,27 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             NavEjemploTheme {
-                //variable del nav controller
+                // El NavController y NavHost deben estar dentro del tema
                 val navController = rememberNavController()
 
-                //empieza en VFormulario
                 NavHost(
                     navController = navController,
                     startDestination = "VFormulario"
                 ) {
-                    composable("VFormulario") { VFormulario(navController) }
-                    composable("VMostrarLista") { VMostrarLista() }
+                    composable("VFormulario") {
+                        FormularioPersona(
+                            onAddContact = {
+                                navController.navigate("VMostrarLista")
+                            }
+                        )
+                    }
+                    /*composable("VMostrarLista") {
+                        PersonaRow(
+                            onAddContact = {
+                                navController.navigate("VFormulario")
+                            }
+                        )
+                    }*/
                 }
             }
         }

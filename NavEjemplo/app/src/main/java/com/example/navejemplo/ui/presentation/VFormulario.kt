@@ -1,5 +1,6 @@
 package com.example.navejemplo.ui.presentation
 
+import android.provider.ContactsContract
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,10 +20,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.rememberNavController
 import com.example.navejemplo.data.repository.PersonaRepository
 
 @Composable
-fun FormularioPersona(modifier: Modifier = Modifier) {
+fun FormularioPersona(modifier: Modifier = Modifier, onAddContact: () -> Unit) {
+
+    val navController = rememberNavController()
+
     Column() {
         Row(modifier = Modifier.padding(10.dp)) {
             Text("Nombre: ")
