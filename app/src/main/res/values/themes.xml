@@ -2,4 +2,6 @@
 <resources>
 
     <style name="Theme.EjemploVM" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="Theme.Ejercicio2" parent="android:Theme.Material.Light.NoActionBar" />
 </resources>
