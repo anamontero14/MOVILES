@@ -1,7 +1,5 @@
 package com.example.ejloteria.data.repositories
 
-import com.example.ejloteria.domain.entities.Apuesta
-
 object RepositoryApuesta {
 
     //private val _apuesta : Apuesta? = null
