@@ -17,6 +17,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
 import com.example.listacontactos.ui.presentation.ContactsScreen
+import com.example.listacontactos.ui.presentation.NuevoContacto
 import com.example.listacontactos.ui.theme.ListaContactosTheme
 import com.example.prueba.data.database.ContactosDatabase
 
@@ -45,7 +46,13 @@ class MainActivity : ComponentActivity() {
                 ) {
                     composable("VListaContactos") {
                         ContactsScreen(
-                            modifier
+                            modifier,
+                            navController,
+                            database)
+                    }
+                    composable("VNuevoContacto") {
+                        NuevoContacto(
+                            navController
                         )
                     }
                 }

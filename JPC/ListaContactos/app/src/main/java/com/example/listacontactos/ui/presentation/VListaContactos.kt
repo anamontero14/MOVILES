@@ -14,11 +14,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
@@ -31,9 +33,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.listacontactos.data.repositories.Repositorio
 import com.example.listacontactos.domain.entities.Contacto
 import com.example.listacontactos.R
+import com.example.prueba.data.database.ContactosDatabase
+import kotlinx.coroutines.launch
 
 @Composable
 fun ContactRow(contacto: Contacto) {
@@ -113,39 +118,34 @@ fun ContactRow(contacto: Contacto) {
 }
 
 @Composable
-fun ContactsScreen(modifier: Modifier = Modifier) {
-    var nombreContacto by remember { mutableStateOf("") }
-    var numeroContacto by remember { mutableIntStateOf(0) }
-    var listaContactos = remember { mutableStateListOf<Contacto>() }
-    val coroutineScope = rememberCoroutineScope()
-    val lista = Repositorio.getAllListaContactos()
-    Column(modifier = modifier) {
-        Row() {
+fun ContactsScreen(
+    modifier: Modifier = Modifier,
+    navHostController: NavHostController,
+    database: ContactosDatabase
+) {
+    var lista = remember { mutableStateListOf<Contacto>() }
 
-        }
+    LaunchedEffect(Unit) {
+        lista.clear()
+        lista.addAll(database.contactosDao().getAllContactos())
+    }
+
+    Column(modifier = modifier) {
         Scaffold(modifier = modifier.fillMaxSize()) { innerPadding ->
-            //recorre la lista y por cada item
             LazyColumn(modifier = Modifier.padding(innerPadding)) {
                 items(lista) { itemContacto ->
-                    //la guarda en un item y se lo pasa al contact row
                     ContactRow(contacto = itemContacto)
+                }
+                item {
+                    Button(
+                        onClick = {
+                            navHostController.navigate("VNuevoContacto")
+                        }
+                    ) { Text("Crear nuevo contacto") }
                 }
             }
         }
     }
 }
 
-@Composable
-fun NuevoContacto(nombreContacto: String, numeroContacto: Int,onTextoChange: (String) -> Unit) {
-    OutlinedTextField(
-        value = nombreContacto,
-        onValueChange = onTextoChange,
-        label = { Text("Introduce el nombre del contacto") }
-    )
-    OutlinedTextField(
-        value = numeroContacto,
-        onValueChange = onTextoChange,
-        label = { Text("Introduce el número del contacto") }
-    )
-}
 
