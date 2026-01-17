@@ -1,0 +1,236 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.example.boletin1"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="30"
+9        android:targetSdkVersion="36" />
+10
+11    <permission
+11-->[androidx.core:core:1.17.0] C:\Users\USUARIO\.gradle\caches\8.13\transforms\a729d0b8908cf6daa89192c37f5c50c4\transformed\core-1.17.0\AndroidManifest.xml:22:5-24:47
+12        android:name="com.example.boletin1.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+12-->[androidx.core:core:1.17.0] C:\Users\USUARIO\.gradle\caches\8.13\transforms\a729d0b8908cf6daa89192c37f5c50c4\transformed\core-1.17.0\AndroidManifest.xml:23:9-81
+13        android:protectionLevel="signature" />
+13-->[androidx.core:core:1.17.0] C:\Users\USUARIO\.gradle\caches\8.13\transforms\a729d0b8908cf6daa89192c37f5c50c4\transformed\core-1.17.0\AndroidManifest.xml:24:9-44
+14
+15    <uses-permission android:name="com.example.boletin1.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+15-->[androidx.core:core:1.17.0] C:\Users\USUARIO\.gradle\caches\8.13\transforms\a729d0b8908cf6daa89192c37f5c50c4\transformed\core-1.17.0\AndroidManifest.xml:26:5-97
+15-->[androidx.core:core:1.17.0] C:\Users\USUARIO\.gradle\caches\8.13\transforms\a729d0b8908cf6daa89192c37f5c50c4\transformed\core-1.17.0\AndroidManifest.xml:26:22-94
+16
+17    <application
+17-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:5:5-70:19
+18        android:allowBackup="true"
+18-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:6:9-35
+19        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+19-->[androidx.core:core:1.17.0] C:\Users\USUARIO\.gradle\caches\8.13\transforms\a729d0b8908cf6daa89192c37f5c50c4\transformed\core-1.17.0\AndroidManifest.xml:28:18-86
+20        android:dataExtractionRules="@xml/data_extraction_rules"
+20-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:7:9-65
+21        android:debuggable="true"
+22        android:extractNativeLibs="false"
+23        android:fullBackupContent="@xml/backup_rules"
+23-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:8:9-54
+24        android:icon="@mipmap/ic_launcher"
+24-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:9:9-43
+25        android:label="@string/app_name"
+25-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:10:9-41
+26        android:roundIcon="@mipmap/ic_launcher_round"
+26-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:11:9-54
+27        android:supportsRtl="true"
+27-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:12:9-35
+28        android:testOnly="true"
+29        android:theme="@style/Theme.Boletin1" >
+29-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:13:9-46
+30        <activity
+30-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:14:9-18:53
+31            android:name="com.example.boletin1.ui.Ejercicio8"
+31-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:15:13-42
+32            android:exported="false"
+32-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:16:13-37
+33            android:label="@string/title_activity_ejercicio8"
+33-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:17:13-62
+34            android:theme="@style/Theme.Boletin1" />
+34-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:18:13-50
+35        <activity
+35-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:19:9-23:53
+36            android:name="com.example.boletin1.ui.Ejercicio7"
+36-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:20:13-42
+37            android:exported="false"
+37-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:21:13-37
+38            android:label="@string/title_activity_ejercicio7"
+38-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:22:13-62
+39            android:theme="@style/Theme.Boletin1" />
+39-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:23:13-50
+40        <activity
+40-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:24:9-28:53
+41            android:name="com.example.boletin1.ui.Ejercicio6"
+41-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:25:13-42
+42            android:exported="false"
+42-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:26:13-37
+43            android:label="@string/title_activity_ejercicio6"
+43-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:27:13-62
+44            android:theme="@style/Theme.Boletin1" />
+44-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:28:13-50
+45        <activity
+45-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:29:9-33:53
+46            android:name="com.example.boletin1.ui.Ejercicio5"
+46-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:30:13-42
+47            android:exported="false"
+47-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:31:13-37
+48            android:label="@string/title_activity_ejercicio5"
+48-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:32:13-62
+49            android:theme="@style/Theme.Boletin1" />
+49-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:33:13-50
+50        <activity
+50-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:34:9-38:53
+51            android:name="com.example.boletin1.ui.Ejercicio4"
+51-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:35:13-42
+52            android:exported="false"
+52-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:36:13-37
+53            android:label="@string/title_activity_ejercicio4"
+53-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:37:13-62
+54            android:theme="@style/Theme.Boletin1" />
+54-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:38:13-50
+55        <activity
+55-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:39:9-43:53
+56            android:name="com.example.boletin1.ui.Ejercicio3"
+56-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:40:13-42
+57            android:exported="false"
+57-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:41:13-37
+58            android:label="@string/title_activity_ejercicio3"
+58-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:42:13-62
+59            android:theme="@style/Theme.Boletin1" />
+59-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:43:13-50
+60        <activity
+60-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:44:9-48:53
+61            android:name="com.example.boletin1.ui.Ejercicio2"
+61-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:45:13-42
+62            android:exported="false"
+62-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:46:13-37
+63            android:label="@string/title_activity_ejercicio2"
+63-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:47:13-62
+64            android:theme="@style/Theme.Boletin1" />
+64-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:48:13-50
+65        <activity
+65-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:49:9-53:53
+66            android:name="com.example.boletin1.ui.Ejercicio1"
+66-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:50:13-42
+67            android:exported="false"
+67-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:51:13-37
+68            android:label="@string/title_activity_ejercicio1"
+68-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:52:13-62
+69            android:theme="@style/Theme.Boletin1" />
+69-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:53:13-50
+70        <activity
+70-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:54:9-58:53
+71            android:name="com.example.boletin1.ui.theme.Ejercicio1"
+71-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:55:13-48
+72            android:exported="false"
+72-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:56:13-37
+73            android:label="@string/title_activity_ejercicio1"
+73-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:57:13-62
+74            android:theme="@style/Theme.Boletin1" />
+74-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:58:13-50
+75        <activity
+75-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:59:9-69:20
+76            android:name="com.example.boletin1.MainActivity"
+76-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:60:13-41
+77            android:exported="true"
+77-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:61:13-36
+78            android:label="@string/app_name"
+78-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:62:13-45
+79            android:theme="@style/Theme.Boletin1" >
+79-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:63:13-50
+80            <intent-filter>
+80-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:64:13-68:29
+81                <action android:name="android.intent.action.MAIN" />
+81-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:65:17-69
+81-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:65:25-66
+82
+83                <category android:name="android.intent.category.LAUNCHER" />
+83-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:67:17-77
+83-->C:\Users\USUARIO\Documents\GitHub\MOVILES\Boletin1\app\src\main\AndroidManifest.xml:67:27-74
+84            </intent-filter>
+85        </activity>
+86        <activity
+86-->[androidx.compose.ui:ui-tooling-android:1.7.0] C:\Users\USUARIO\.gradle\caches\8.13\transforms\d3f1da9f317967dbb70776a179476555\transformed\ui-tooling-release\AndroidManifest.xml:23:9-25:39
+87            android:name="androidx.compose.ui.tooling.PreviewActivity"
+87-->[androidx.compose.ui:ui-tooling-android:1.7.0] C:\Users\USUARIO\.gradle\caches\8.13\transforms\d3f1da9f317967dbb70776a179476555\transformed\ui-tooling-release\AndroidManifest.xml:24:13-71
+88            android:exported="true" />
+88-->[androidx.compose.ui:ui-tooling-android:1.7.0] C:\Users\USUARIO\.gradle\caches\8.13\transforms\d3f1da9f317967dbb70776a179476555\transformed\ui-tooling-release\AndroidManifest.xml:25:13-36
+89        <activity
+89-->[androidx.compose.ui:ui-test-manifest:1.7.0] C:\Users\USUARIO\.gradle\caches\8.13\transforms\76dedbab19011f10d14cd28ed0cc6d52\transformed\ui-test-manifest-1.7.0\AndroidManifest.xml:23:9-25:39
+90            android:name="androidx.activity.ComponentActivity"
+90-->[androidx.compose.ui:ui-test-manifest:1.7.0] C:\Users\USUARIO\.gradle\caches\8.13\transforms\76dedbab19011f10d14cd28ed0cc6d52\transformed\ui-test-manifest-1.7.0\AndroidManifest.xml:24:13-63
+91            android:exported="true" />
+91-->[androidx.compose.ui:ui-test-manifest:1.7.0] C:\Users\USUARIO\.gradle\caches\8.13\transforms\76dedbab19011f10d14cd28ed0cc6d52\transformed\ui-test-manifest-1.7.0\AndroidManifest.xml:25:13-36
+92
+93        <provider
+93-->[androidx.emoji2:emoji2:1.3.0] C:\Users\USUARIO\.gradle\caches\8.13\transforms\9acb774eed2e951332bb0465128b5126\transformed\emoji2-1.3.0\AndroidManifest.xml:24:9-32:20
+94            android:name="androidx.startup.InitializationProvider"
+94-->[androidx.emoji2:emoji2:1.3.0] C:\Users\USUARIO\.gradle\caches\8.13\transforms\9acb774eed2e951332bb0465128b5126\transformed\emoji2-1.3.0\AndroidManifest.xml:25:13-67
+95            android:authorities="com.example.boletin1.androidx-startup"
+95-->[androidx.emoji2:emoji2:1.3.0] C:\Users\USUARIO\.gradle\caches\8.13\transforms\9acb774eed2e951332bb0465128b5126\transformed\emoji2-1.3.0\AndroidManifest.xml:26:13-68
+96            android:exported="false" >
+96-->[androidx.emoji2:emoji2:1.3.0] C:\Users\USUARIO\.gradle\caches\8.13\transforms\9acb774eed2e951332bb0465128b5126\transformed\emoji2-1.3.0\AndroidManifest.xml:27:13-37
+97            <meta-data
+97-->[androidx.emoji2:emoji2:1.3.0] C:\Users\USUARIO\.gradle\caches\8.13\transforms\9acb774eed2e951332bb0465128b5126\transformed\emoji2-1.3.0\AndroidManifest.xml:29:13-31:52
+98                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+98-->[androidx.emoji2:emoji2:1.3.0] C:\Users\USUARIO\.gradle\caches\8.13\transforms\9acb774eed2e951332bb0465128b5126\transformed\emoji2-1.3.0\AndroidManifest.xml:30:17-75
+99                android:value="androidx.startup" />
+99-->[androidx.emoji2:emoji2:1.3.0] C:\Users\USUARIO\.gradle\caches\8.13\transforms\9acb774eed2e951332bb0465128b5126\transformed\emoji2-1.3.0\AndroidManifest.xml:31:17-49
+100            <meta-data
+100-->[androidx.lifecycle:lifecycle-process:2.9.4] C:\Users\USUARIO\.gradle\caches\8.13\transforms\42d46d2d3769705ecebae8c80858c34e\transformed\lifecycle-process-2.9.4\AndroidManifest.xml:29:13-31:52
+101                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+101-->[androidx.lifecycle:lifecycle-process:2.9.4] C:\Users\USUARIO\.gradle\caches\8.13\transforms\42d46d2d3769705ecebae8c80858c34e\transformed\lifecycle-process-2.9.4\AndroidManifest.xml:30:17-78
+102                android:value="androidx.startup" />
+102-->[androidx.lifecycle:lifecycle-process:2.9.4] C:\Users\USUARIO\.gradle\caches\8.13\transforms\42d46d2d3769705ecebae8c80858c34e\transformed\lifecycle-process-2.9.4\AndroidManifest.xml:31:17-49
+103            <meta-data
+103-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\USUARIO\.gradle\caches\8.13\transforms\f9ededffc1757bf1516d836013e57b28\transformed\profileinstaller-1.4.0\AndroidManifest.xml:29:13-31:52
+104                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+104-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\USUARIO\.gradle\caches\8.13\transforms\f9ededffc1757bf1516d836013e57b28\transformed\profileinstaller-1.4.0\AndroidManifest.xml:30:17-85
+105                android:value="androidx.startup" />
+105-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\USUARIO\.gradle\caches\8.13\transforms\f9ededffc1757bf1516d836013e57b28\transformed\profileinstaller-1.4.0\AndroidManifest.xml:31:17-49
+106        </provider>
+107
+108        <receiver
+108-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\USUARIO\.gradle\caches\8.13\transforms\f9ededffc1757bf1516d836013e57b28\transformed\profileinstaller-1.4.0\AndroidManifest.xml:34:9-52:20
+109            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+109-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\USUARIO\.gradle\caches\8.13\transforms\f9ededffc1757bf1516d836013e57b28\transformed\profileinstaller-1.4.0\AndroidManifest.xml:35:13-76
+110            android:directBootAware="false"
+110-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\USUARIO\.gradle\caches\8.13\transforms\f9ededffc1757bf1516d836013e57b28\transformed\profileinstaller-1.4.0\AndroidManifest.xml:36:13-44
+111            android:enabled="true"
+111-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\USUARIO\.gradle\caches\8.13\transforms\f9ededffc1757bf1516d836013e57b28\transformed\profileinstaller-1.4.0\AndroidManifest.xml:37:13-35
+112            android:exported="true"
+112-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\USUARIO\.gradle\caches\8.13\transforms\f9ededffc1757bf1516d836013e57b28\transformed\profileinstaller-1.4.0\AndroidManifest.xml:38:13-36
+113            android:permission="android.permission.DUMP" >
+113-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\USUARIO\.gradle\caches\8.13\transforms\f9ededffc1757bf1516d836013e57b28\transformed\profileinstaller-1.4.0\AndroidManifest.xml:39:13-57
+114            <intent-filter>
+114-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\USUARIO\.gradle\caches\8.13\transforms\f9ededffc1757bf1516d836013e57b28\transformed\profileinstaller-1.4.0\AndroidManifest.xml:40:13-42:29
+115                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+115-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\USUARIO\.gradle\caches\8.13\transforms\f9ededffc1757bf1516d836013e57b28\transformed\profileinstaller-1.4.0\AndroidManifest.xml:41:17-91
+115-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\USUARIO\.gradle\caches\8.13\transforms\f9ededffc1757bf1516d836013e57b28\transformed\profileinstaller-1.4.0\AndroidManifest.xml:41:25-88
+116            </intent-filter>
+117            <intent-filter>
+117-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\USUARIO\.gradle\caches\8.13\transforms\f9ededffc1757bf1516d836013e57b28\transformed\profileinstaller-1.4.0\AndroidManifest.xml:43:13-45:29
+118                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+118-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\USUARIO\.gradle\caches\8.13\transforms\f9ededffc1757bf1516d836013e57b28\transformed\profileinstaller-1.4.0\AndroidManifest.xml:44:17-85
+118-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\USUARIO\.gradle\caches\8.13\transforms\f9ededffc1757bf1516d836013e57b28\transformed\profileinstaller-1.4.0\AndroidManifest.xml:44:25-82
+119            </intent-filter>
+120            <intent-filter>
+120-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\USUARIO\.gradle\caches\8.13\transforms\f9ededffc1757bf1516d836013e57b28\transformed\profileinstaller-1.4.0\AndroidManifest.xml:46:13-48:29
+121                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+121-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\USUARIO\.gradle\caches\8.13\transforms\f9ededffc1757bf1516d836013e57b28\transformed\profileinstaller-1.4.0\AndroidManifest.xml:47:17-88
+121-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\USUARIO\.gradle\caches\8.13\transforms\f9ededffc1757bf1516d836013e57b28\transformed\profileinstaller-1.4.0\AndroidManifest.xml:47:25-85
+122            </intent-filter>
+123            <intent-filter>
+123-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\USUARIO\.gradle\caches\8.13\transforms\f9ededffc1757bf1516d836013e57b28\transformed\profileinstaller-1.4.0\AndroidManifest.xml:49:13-51:29
+124                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+124-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\USUARIO\.gradle\caches\8.13\transforms\f9ededffc1757bf1516d836013e57b28\transformed\profileinstaller-1.4.0\AndroidManifest.xml:50:17-95
+124-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\USUARIO\.gradle\caches\8.13\transforms\f9ededffc1757bf1516d836013e57b28\transformed\profileinstaller-1.4.0\AndroidManifest.xml:50:25-92
+125            </intent-filter>
+126        </receiver>
+127    </application>
+128
+129</manifest>
