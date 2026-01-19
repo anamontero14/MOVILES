@@ -6,21 +6,22 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import com.example.piedrapapeltijera.domain.entities.Jugada
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface JugadaDAO {
     @Query("SELECT * FROM jugada_entity")
-    suspend fun getAllJugadas(): MutableList<Jugada>
+    fun getAllJugadas(): Flow<List<Jugada>>
 
     @Insert
-    suspend fun addJugada(jugada: Jugada): Long
+    fun addJugada(jugada: Jugada): Long
 
     @Query("SELECT * FROM jugada_entity WHERE id LIKE :id")
-    suspend fun getJugadaByID(id: Long): Jugada
+    fun getJugadaByID(id: Long): Jugada
 
     @Update
-    suspend fun updateJugada(jugada: Jugada): Int
+    fun updateJugada(jugada: Jugada): Int
 
     @Delete
-    suspend fun deleteJugada(jugada: Jugada): Int
+    fun deleteJugada(jugada: Jugada): Int
 }

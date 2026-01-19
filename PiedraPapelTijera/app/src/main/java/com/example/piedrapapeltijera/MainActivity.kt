@@ -17,15 +17,25 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
 import com.example.piedrapapeltijera.data.database.JugadasDatabase
+import com.example.piedrapapeltijera.data.repositories.RepositoryJugadas
 import com.example.piedrapapeltijera.ui.theme.PiedraPapelTijeraTheme
+import com.example.piedrapapeltijera.ui.viewmodels.JugadasFactory
 import com.example.piedrapapeltijera.ui.viewmodels.VMJugadas
 import com.example.piedrapapeltijera.ui.views.Bienvenida
 import com.example.piedrapapeltijera.ui.views.Juego
 import com.example.piedrapapeltijera.ui.views.Resultados
 import kotlin.getValue
 
+
 class MainActivity : ComponentActivity() {
-    private val viewmodel: VMJugadas by viewModels()
+
+    //Añade una variable que cargue el repositorio en modo Lazy (lateinit o lazy)
+    private val repositoryJugadas by lazy { RepositoryJugadas(database.jugadaDao()) }
+
+    //Instanciamos el ViewModel
+    private val viewmodel: VMJugadas by viewModels {
+        JugadasFactory(repositoryJugadas)
+    }
 
     companion object {
         lateinit var database: JugadasDatabase
@@ -34,17 +44,14 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         database = Room.databaseBuilder(
-        applicationContext,			// Contexto de la aplicación
-        JugadasDatabase::class.java,		// Clase de la base de datos
-        "tareas-db"				// Nombre de la base de datos
-        ).build()					// Se construye
-
-
+            applicationContext,			            // Contexto de la aplicación
+            JugadasDatabase::class.java,		// Clase de la base de datos
+            "tareas-db"				        // Nombre de la base de datos
+        ).build()					                // Se construye
 
         enableEdgeToEdge()
         setContent {
             PiedraPapelTijeraTheme() {
-                // El NavController y NavHost deben estar dentro del tema
                 val navController = rememberNavController()
                 NavHost(
                     navController = navController,

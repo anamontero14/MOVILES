@@ -82,15 +82,14 @@ fun Bienvenida(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            PedirNombre(navController, viewmodel)
+            PedirNombre(navController)
         }
     }
 }
 
 @Composable
 fun PedirNombre(
-    navController: NavHostController,
-    viewmodel: VMJugadas
+    navController: NavHostController
 ) {
     var nombreJugador by remember { mutableStateOf("") }
 
