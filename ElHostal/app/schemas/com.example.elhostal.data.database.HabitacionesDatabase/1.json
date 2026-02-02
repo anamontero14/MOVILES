@@ -1,0 +1,61 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "0479990a7b7af2d54856b49bd8b898d7",
+    "entities": [
+      {
+        "tableName": "habitacion_entity",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `tipoCama` TEXT NOT NULL, `bañoPrivado` INTEGER NOT NULL, `wifi` INTEGER NOT NULL, `ac` INTEGER NOT NULL, `serviciosExtra` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tipoCama",
+            "columnName": "tipoCama",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "bañoPrivado",
+            "columnName": "bañoPrivado",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "wifi",
+            "columnName": "wifi",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ac",
+            "columnName": "ac",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "serviciosExtra",
+            "columnName": "serviciosExtra",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        }
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0479990a7b7af2d54856b49bd8b898d7')"
+    ]
+  }
+}

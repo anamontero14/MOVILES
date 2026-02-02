@@ -1,276 +1,250 @@
 package com.example.elhostal.ui.views
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.elhostal.Routes
-import com.example.elhostal.domain.roles.UserRole
-import com.example.elhostal.ui.viewmodels.AddHabitacionState
-import com.example.elhostal.ui.viewmodels.VMAuth
+import com.example.elhostal.domain.entities.Habitacion
 import com.example.elhostal.ui.viewmodels.VMHabitacion
-import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun VAñadirHabitacion(
     navController: NavHostController,
-    vmHabitacion: VMHabitacion,
-    vmAuth: VMAuth
+    viewmodelH: VMHabitacion
 ) {
-    val currentRole = vmAuth.getCurrentUserRole()
-    val addHabitacionState by vmHabitacion.addHabitacionState.collectAsState()
-
-    // Verificar que el usuario sea admin
-    if (currentRole != UserRole.ADMIN) {
-        LaunchedEffect(Unit) {
-            navController.popBackStack()
-        }
-        return
-    }
-
     var tipoCama by remember { mutableStateOf("") }
     var bañoPrivado by remember { mutableStateOf(false) }
     var wifi by remember { mutableStateOf(false) }
     var ac by remember { mutableStateOf(false) }
     var serviciosExtra by remember { mutableStateOf(false) }
+    var mensaje by remember { mutableStateOf("") }
+    var mostrarDialogo by remember { mutableStateOf(false) }
 
-    val scope = rememberCoroutineScope()
-    val snackbarHostState = remember { SnackbarHostState() }
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+            .verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "Nueva Habitación",
+            style = MaterialTheme.typography.headlineMedium,
+            modifier = Modifier.padding(bottom = 24.dp)
+        )
 
-    // Navegar de vuelta cuando se añada correctamente
-    LaunchedEffect(addHabitacionState) {
-        if (addHabitacionState is AddHabitacionState.Success) {
-            scope.launch {
-                snackbarHostState.showSnackbar("Habitación añadida correctamente")
-            }
-            navController.navigate(Routes.ListaHabitaciones.route) {
-                popUpTo(Routes.ListaHabitaciones.route) { inclusive = true }
-            }
-            vmHabitacion.resetAddHabitacionState()
-        } else if (addHabitacionState is AddHabitacionState.Error) {
-            scope.launch {
-                snackbarHostState.showSnackbar(
-                    (addHabitacionState as AddHabitacionState.Error).message
+        // Campo: Tipo de cama
+        OutlinedTextField(
+            value = tipoCama,
+            onValueChange = { tipoCama = it },
+            label = { Text("Tipo de Cama") },
+            placeholder = { Text("Ej: Individual, Doble, Queen, King") },
+            modifier = Modifier.fillMaxWidth(),
+            singleLine = true
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Switch: Baño Privado
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceVariant
+            )
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column {
+                    Text(
+                        text = "Baño Privado",
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                    Text(
+                        text = "La habitación tiene baño propio",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+                Switch(
+                    checked = bañoPrivado,
+                    onCheckedChange = { bañoPrivado = it }
                 )
             }
         }
-    }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Añadir Habitación") },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Volver")
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = Color.White,
-                    navigationIconContentColor = Color.White
-                )
+        Spacer(modifier = Modifier.height(12.dp))
+
+        // Switch: WiFi
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceVariant
             )
-        },
-        snackbarHost = { SnackbarHost(snackbarHostState) }
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .padding(16.dp)
         ) {
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column {
+                    Text(
+                        text = "WiFi",
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                    Text(
+                        text = "Conexión a internet inalámbrica",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+                Switch(
+                    checked = wifi,
+                    onCheckedChange = { wifi = it }
                 )
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        Icons.Default.AdminPanelSettings,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(32.dp)
-                    )
-                    Spacer(modifier = Modifier.width(12.dp))
-                    Column {
-                        Text(
-                            text = "Modo Administrador",
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Text(
-                            text = "Añade nuevas habitaciones al hostal",
-                            fontSize = 12.sp,
-                            color = Color.Gray
-                        )
-                    }
-                }
             }
+        }
 
-            Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(12.dp))
 
-            Text(
-                text = "Información de la habitación",
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
+        // Switch: Aire Acondicionado
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceVariant
             )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Campo de tipo de cama
-            OutlinedTextField(
-                value = tipoCama,
-                onValueChange = { tipoCama = it },
-                label = { Text("Tipo de cama") },
-                placeholder = { Text("Ej: Individual, Doble, Queen, King...") },
-                leadingIcon = {
-                    Icon(Icons.Default.Bed, contentDescription = null)
-                },
-                modifier = Modifier.fillMaxWidth(),
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
-            )
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            Text(
-                text = "Servicios y comodidades",
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Switches para los servicios
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Column(
-                    modifier = Modifier.padding(16.dp)
-                ) {
-                    ServiceSwitch(
-                        icon = Icons.Default.Bathroom,
-                        label = "Baño privado",
-                        checked = bañoPrivado,
-                        onCheckedChange = { bañoPrivado = it }
+                Column {
+                    Text(
+                        text = "Aire Acondicionado",
+                        style = MaterialTheme.typography.bodyLarge
                     )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Divider()
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    ServiceSwitch(
-                        icon = Icons.Default.Wifi,
-                        label = "WiFi",
-                        checked = wifi,
-                        onCheckedChange = { wifi = it }
-                    )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Divider()
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    ServiceSwitch(
-                        icon = Icons.Default.AcUnit,
-                        label = "Aire acondicionado",
-                        checked = ac,
-                        onCheckedChange = { ac = it }
-                    )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Divider()
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    ServiceSwitch(
-                        icon = Icons.Default.RoomService,
-                        label = "Servicios extra",
-                        checked = serviciosExtra,
-                        onCheckedChange = { serviciosExtra = it }
+                    Text(
+                        text = "Sistema de climatización",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
+                Switch(
+                    checked = ac,
+                    onCheckedChange = { ac = it }
+                )
             }
+        }
 
-            Spacer(modifier = Modifier.weight(1f))
+        Spacer(modifier = Modifier.height(12.dp))
 
-            // Botón de añadir
-            Button(
-                onClick = {
-                    vmHabitacion.addHabitacion(
+        // Switch: Servicios Extra
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceVariant
+            )
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column {
+                    Text(
+                        text = "Servicios Extra",
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                    Text(
+                        text = "TV, minibar, caja fuerte, etc.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+                Switch(
+                    checked = serviciosExtra,
+                    onCheckedChange = { serviciosExtra = it }
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        // Botón Guardar
+        Button(
+            onClick = {
+                if (tipoCama.isNotEmpty()) {
+                    val nuevaHabitacion = Habitacion(
                         tipoCama = tipoCama,
                         bañoPrivado = bañoPrivado,
                         wifi = wifi,
                         ac = ac,
                         serviciosExtra = serviciosExtra
                     )
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(56.dp),
-                enabled = tipoCama.isNotBlank(),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary
-                )
-            ) {
-                Icon(Icons.Default.Add, contentDescription = null)
-                Spacer(modifier = Modifier.width(8.dp))
-                Text("Añadir Habitación", fontSize = 16.sp)
-            }
+                    viewmodelH.addHabitacion(nuevaHabitacion)
+                    mostrarDialogo = true
+                } else {
+                    mensaje = "El tipo de cama es obligatorio"
+                }
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp)
+        ) {
+            Text("Guardar Habitación")
+        }
+
+        Button(
+            onClick = {
+                navController.navigate("V1ListaHabitaciones")
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp)
+        ) {
+            Text("Lista de habitaciones")
+        }
+
+        if (mensaje.isNotEmpty()) {
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = mensaje,
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.bodyMedium
+            )
         }
     }
-}
 
-@Composable
-private fun ServiceSwitch(
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
-    label: String,
-    checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit
-) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.weight(1f)
-        ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                tint = if (checked) MaterialTheme.colorScheme.primary else Color.Gray,
-                modifier = Modifier.size(24.dp)
-            )
-            Spacer(modifier = Modifier.width(12.dp))
-            Text(
-                text = label,
-                fontSize = 16.sp,
-                color = if (checked) Color.Black else Color.Gray
-            )
-        }
-
-        Switch(
-            checked = checked,
-            onCheckedChange = onCheckedChange
+    // Diálogo de confirmación
+    if (mostrarDialogo) {
+        AlertDialog(
+            onDismissRequest = { },
+            title = { Text("¡Habitación Creada!") },
+            text = { Text("La habitación se ha agregado exitosamente al sistema") },
+            confirmButton = {
+                TextButton(onClick = {
+                    mostrarDialogo = false
+                    navController.popBackStack()
+                }) {
+                    Text("Aceptar")
+                }
+            }
         )
     }
 }

@@ -1,271 +1,238 @@
 package com.example.elhostal.ui.views
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.elhostal.Routes
-import com.example.elhostal.ui.viewmodels.AddReservaState
-import com.example.elhostal.ui.viewmodels.VMAuth
+import com.example.elhostal.domain.roles.CurrentUser
 import com.example.elhostal.ui.viewmodels.VMHabitacion
 import com.example.elhostal.ui.viewmodels.VMReserva
-import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.*
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun V3Reserva(
     navController: NavHostController,
-    vmReserva: VMReserva,
-    vmAuth: VMAuth,
-    vmHabitacion: VMHabitacion,
-    idHabitacion: Int
+    viewmodelH: VMHabitacion,
+    viewmodelR: VMReserva,
+    habitacionId: Int,
+    clienteId: Int
 ) {
-    val habitaciones by vmHabitacion.listaHabitaciones.collectAsState()
-    val habitacion = habitaciones.find { it.id == idHabitacion }
+    val habitaciones by viewmodelH.listaHabitaciones.collectAsState()
+    val reservas by viewmodelR.listaReservas.collectAsState()
 
-    val currentUser by vmAuth.currentUser.collectAsState()
-    val addReservaState by vmReserva.addReservaState.collectAsState()
+    val habitacion = habitaciones.find { it.id == habitacionId }
+    val reserva = reservas.find { it.idHabitacionReservada == habitacionId && it.idUsuario == clienteId }
 
-    var fecha by remember { mutableStateOf(getCurrentDate()) }
-    var showConfirmDialog by remember { mutableStateOf(false) }
+    val usuarioActual = CurrentUser.usuario
+    val esAdmin = usuarioActual?.role?.name == "ADMIN"
 
-    val scope = rememberCoroutineScope()
-    val snackbarHostState = remember { SnackbarHostState() }
+    var mostrarDialogoCancelar by remember { mutableStateOf(false) }
+    var mostrarDialogoLiberar by remember { mutableStateOf(false) }
 
-    // Navegar a lista de reservas cuando la reserva sea exitosa
-    LaunchedEffect(addReservaState) {
-        if (addReservaState is AddReservaState.Success) {
-            navController.navigate(Routes.ListaReservas.route) {
-                popUpTo(Routes.ListaHabitaciones.route)
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+            .verticalScroll(rememberScrollState())
+    ) {
+        // Espacio superior
+        Spacer(modifier = Modifier.height(40.dp))
+
+        // Header
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(onClick = { navController.navigate("V4ListaReservas") }) {
+                Icon(Icons.Default.ArrowBack, contentDescription = "Volver")
             }
-            vmReserva.resetAddReservaState()
-        } else if (addReservaState is AddReservaState.Error) {
-            scope.launch {
-                snackbarHostState.showSnackbar(
-                    (addReservaState as AddReservaState.Error).message
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = "Detalles de Reserva",
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.Bold
+            )
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+        Divider()
+        Spacer(modifier = Modifier.height(16.dp))
+
+        if (habitacion == null || reserva == null) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text("Reserva no encontrada")
+            }
+            return
+        }
+
+        // Estado
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(
+                containerColor = when {
+                    reserva.isCancelada -> MaterialTheme.colorScheme.errorContainer
+                    !reserva.isLibre -> MaterialTheme.colorScheme.tertiaryContainer
+                    else -> MaterialTheme.colorScheme.primaryContainer
+                }
+            )
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text("Estado", style = MaterialTheme.typography.labelMedium)
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = when {
+                        reserva.isCancelada -> "CANCELADA"
+                        !reserva.isLibre -> "OCUPADA"
+                        else -> "ACTIVA"
+                    },
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.Bold
                 )
             }
         }
-    }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Realizar Reserva") },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Volver")
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = Color.White,
-                    navigationIconContentColor = Color.White
-                )
-            )
-        },
-        snackbarHost = { SnackbarHost(snackbarHostState) }
-    ) { paddingValues ->
-        if (habitacion == null || currentUser == null) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-                contentAlignment = Alignment.Center
-            ) {
-                Text("Error al cargar la información")
-            }
-        } else {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
-                    .padding(16.dp)
-            ) {
-                // Card de resumen de habitación
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.primaryContainer
-                    )
-                ) {
-                    Column(
-                        modifier = Modifier.padding(16.dp)
-                    ) {
-                        Text(
-                            text = "Resumen de Reserva",
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold
-                        )
+        Spacer(modifier = Modifier.height(24.dp))
 
-                        Spacer(modifier = Modifier.height(12.dp))
+        // Info Habitación
+        Text(
+            text = "Habitación",
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold
+        )
 
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(
-                                Icons.Default.Home,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.primary
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text("Habitación #${habitacion.id}")
-                        }
+        Spacer(modifier = Modifier.height(12.dp))
 
-                        Spacer(modifier = Modifier.height(8.dp))
+        InfoCard("Número", "Habitación ${habitacion.id}")
+        InfoCard("Tipo de Cama", habitacion.tipoCama)
 
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(
-                                Icons.Default.Bed,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.primary
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text("Tipo: ${habitacion.tipoCama}")
-                        }
+        Spacer(modifier = Modifier.height(24.dp))
 
-                        Spacer(modifier = Modifier.height(8.dp))
+        // Info Reserva
+        Text(
+            text = "Detalles de Reserva",
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold
+        )
 
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(
-                                Icons.Default.Person,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.primary
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text("Usuario: ${currentUser.nombre}")
-                        }
-                    }
-                }
+        Spacer(modifier = Modifier.height(12.dp))
 
-                Spacer(modifier = Modifier.height(24.dp))
+        InfoCard("ID Reserva", "#${reserva.id}")
+        InfoCard("Fecha", reserva.fecha)
+        InfoCard("Cliente ID", "#${reserva.idUsuario}")
 
-                // Card de servicios incluidos
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-                ) {
-                    Column(
-                        modifier = Modifier.padding(16.dp)
-                    ) {
-                        Text(
-                            text = "Servicios incluidos:",
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Bold
-                        )
+        Spacer(modifier = Modifier.height(32.dp))
 
-                        Spacer(modifier = Modifier.height(12.dp))
-
-                        if (habitacion.bañoPrivado) ServiceChip("Baño privado")
-                        if (habitacion.wifi) ServiceChip("WiFi")
-                        if (habitacion.ac) ServiceChip("Aire acondicionado")
-                        if (habitacion.serviciosExtra) ServiceChip("Servicios extra")
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(24.dp))
-
-                // Información de fecha
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-                ) {
-                    Column(
-                        modifier = Modifier.padding(16.dp)
-                    ) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(
-                                Icons.Default.CalendarMonth,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.primary
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Column {
-                                Text(
-                                    text = "Fecha de reserva:",
-                                    fontSize = 14.sp,
-                                    color = Color.Gray
-                                )
-                                Text(
-                                    text = fecha,
-                                    fontSize = 16.sp,
-                                    fontWeight = FontWeight.Medium
-                                )
-                            }
-                        }
-                    }
-                }
-
-                Spacer(modifier = Modifier.weight(1f))
-
-                // Botón de confirmar reserva
+        // Botones
+        if (!reserva.isCancelada) {
+            if (esAdmin && reserva.isLibre) {
                 Button(
-                    onClick = { showConfirmDialog = true },
+                    onClick = { mostrarDialogoLiberar = true },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary
+                        containerColor = MaterialTheme.colorScheme.tertiary
                     )
                 ) {
-                    Icon(Icons.Default.Check, contentDescription = null)
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text("Confirmar Reserva", fontSize = 16.sp)
+                    Text("Marcar como Ocupada")
+                }
+
+                Spacer(modifier = Modifier.height(12.dp))
+            }
+
+            if (usuarioActual?.id == clienteId || esAdmin) {
+                OutlinedButton(
+                    onClick = { mostrarDialogoCancelar = true },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp),
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        contentColor = MaterialTheme.colorScheme.error
+                    )
+                ) {
+                    Text("Cancelar Reserva")
+                }
+            }
+        } else {
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.errorContainer
+                )
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        Icons.Default.Close,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.error
+                    )
+                    Spacer(modifier = Modifier.width(12.dp))
+                    Text("Esta reserva ha sido cancelada")
                 }
             }
         }
     }
 
-    // Diálogo de confirmación
-    if (showConfirmDialog) {
+    // Diálogo cancelar
+    if (mostrarDialogoCancelar) {
         AlertDialog(
-            onDismissRequest = { showConfirmDialog = false },
-            icon = {
-                Icon(
-                    Icons.Default.CheckCircle,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary
-                )
-            },
-            title = { Text("Confirmar Reserva") },
-            text = {
-                Column {
-                    Text("¿Deseas confirmar la reserva de la Habitación #$idHabitacion?")
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        "Fecha: $fecha",
-                        fontSize = 14.sp,
-                        color = Color.Gray
-                    )
+            onDismissRequest = { mostrarDialogoCancelar = false },
+            title = { Text("¿Cancelar Reserva?") },
+            text = { Text("Esta acción no se puede deshacer.") },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        viewmodelR.cancelarReserva(reserva)
+                        mostrarDialogoCancelar = false
+                        navController.navigate("V4ListaReservas")
+                    }
+                ) {
+                    Text("Cancelar Reserva")
                 }
             },
+            dismissButton = {
+                TextButton(onClick = { mostrarDialogoCancelar = false }) {
+                    Text("Volver")
+                }
+            }
+        )
+    }
+
+    // Diálogo ocupar
+    if (mostrarDialogoLiberar) {
+        AlertDialog(
+            onDismissRequest = { mostrarDialogoLiberar = false },
+            title = { Text("¿Marcar como Ocupada?") },
+            text = { Text("La habitación se marcará como ocupada.") },
             confirmButton = {
-                Button(
+                TextButton(
                     onClick = {
-                        currentUser?.let {
-                            vmReserva.addReserva(
-                                idHabitacion = idHabitacion,
-                                idUsuario = it.id,
-                                fecha = fecha
-                            )
-                        }
-                        showConfirmDialog = false
+                        reserva?.isLibre = false
+                        viewmodelR.liberarReserva(reserva)
+                        mostrarDialogoLiberar = false
                     }
                 ) {
                     Text("Confirmar")
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showConfirmDialog = false }) {
+                TextButton(onClick = { mostrarDialogoLiberar = false }) {
                     Text("Cancelar")
                 }
             }
@@ -274,23 +241,23 @@ fun V3Reserva(
 }
 
 @Composable
-private fun ServiceChip(text: String) {
-    Row(
-        modifier = Modifier.padding(vertical = 4.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(
-            Icons.Default.CheckCircle,
-            contentDescription = null,
-            tint = Color(0xFF4CAF50),
-            modifier = Modifier.size(20.dp)
+private fun InfoCard(label: String, value: String) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
         )
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(text = text, fontSize = 14.sp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(label)
+            Text(value, fontWeight = FontWeight.SemiBold)
+        }
     }
-}
-
-private fun getCurrentDate(): String {
-    val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-    return sdf.format(Date())
 }

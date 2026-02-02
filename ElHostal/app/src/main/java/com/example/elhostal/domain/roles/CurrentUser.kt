@@ -1,33 +1,32 @@
 package com.example.elhostal.domain.roles
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import com.example.elhostal.domain.entities.UsuarioLoggeado
 
 object CurrentUser {
+    // Expón el State, no solo el valor
+    var usuario by mutableStateOf<UsuarioLoggeado?>(null)
+        private set  // Solo modificable internamente
 
-    private var usuario: UsuarioLoggeado? = null
-
-    // Cuando alguien hace login
     fun login(user: UsuarioLoggeado) {
-        this.usuario = user
+        usuario = user
     }
 
-    // Cuando entra como invitado
     fun setAsGuest() {
-        this.usuario = null
+        usuario = null
     }
 
-    // Obtener el rol actual
     fun getRole(): UserRole {
         return usuario?.role ?: UserRole.GUEST
     }
 
-    // Verificar si tiene un permiso
     fun hasPermission(permission: AppPermission): Boolean {
         return getRole().permissions.contains(permission)
     }
 
-    // Cerrar sesión
     fun logout() {
-        this.usuario = null
+        usuario = null
     }
 }

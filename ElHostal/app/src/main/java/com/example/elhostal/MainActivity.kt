@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -18,6 +19,8 @@ import com.example.elhostal.data.database.UsuarioLoggeadoDatabase
 import com.example.elhostal.data.repositories.RepositoryHabitaciones
 import com.example.elhostal.data.repositories.RepositoryReservas
 import com.example.elhostal.data.repositories.RepositoryUsuarioLoggeado
+import com.example.elhostal.domain.entities.UsuarioLoggeado
+import com.example.elhostal.domain.roles.UserRole
 import com.example.elhostal.ui.factory.AuthFactory
 import com.example.elhostal.ui.factory.HabitacionFactory
 import com.example.elhostal.ui.factory.ReservaFactory
@@ -26,6 +29,9 @@ import com.example.elhostal.ui.viewmodels.VMAuth
 import com.example.elhostal.ui.viewmodels.VMHabitacion
 import com.example.elhostal.ui.viewmodels.VMReserva
 import com.example.elhostal.ui.views.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
@@ -60,6 +66,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // CREAR LAS BASES DE DATOS PRIMERO
         databaseH = Room.databaseBuilder(
             applicationContext,
             HabitacionesDatabase::class.java,
@@ -76,131 +83,98 @@ class MainActivity : ComponentActivity() {
             applicationContext,
             UsuarioLoggeadoDatabase::class.java,
             "UsuarioLoggeadoDatabase"
-        ).build()
+        )
+            .fallbackToDestructiveMigration()  // AGREGAR ESTA LÍNEA
+            .build()
+
+        // AHORA SÍ CREAR EL ADMIN
+        crearAdminInicial()
 
         enableEdgeToEdge()
         setContent {
             ElHostalTheme {
-                AppNavigation(
-                    vmHabitacion = vmHabitacion,
-                    vmReserva = vmReserva,
-                    vmAuth = vmAuth
-                )
+                val navController = rememberNavController()
+                NavHost(
+                    navController = navController,
+                    startDestination = "V1ListaHabitaciones"
+                ) {
+                    composable("V1ListaHabitaciones") {
+                        ListaHabitaciones(
+                            navController,
+                            vmHabitacion
+                        )
+                    }
+                    composable("V2Habitacion/{id}") { backStackEntry ->
+                        val id = backStackEntry.arguments?.getString("id")?.toIntOrNull() ?: 0
+
+                        V2Habitacion(
+                            navController,
+                            vmHabitacion,
+                            vmReserva,
+                            id
+                        )
+                    }
+                    composable("V3Reserva/{id}/{idUsuario}") { backStackEntry ->
+                        val id = backStackEntry.arguments?.getString("id")?.toIntOrNull() ?: 0
+                        val idUsuario = backStackEntry.arguments?.getString("idUsuario")?.toIntOrNull() ?: 0
+
+                        V3Reserva(
+                            navController,
+                            vmHabitacion,
+                            vmReserva,
+                            id,
+                            idUsuario
+                        )
+
+                    }
+
+                    composable("V4ListaReservas") {
+                        V4ListaReservas(
+                            navController,
+                            vmHabitacion,
+                            vmReserva
+                        )
+                    }
+
+                    composable("VRegister") {
+                        VRegister(
+                            navController,
+                            vmAuth
+                        )
+                    }
+                    composable("VLogin") {
+                        VLogin(
+                            navController,
+                            vmAuth
+                        )
+                    }
+                    composable ("VAñadirHabitacion"){
+                        VAñadirHabitacion(
+                            navController,
+                            vmHabitacion
+                        )
+                    }
+                }
             }
         }
     }
-}
 
-@Composable
-fun AppNavigation(
-    vmHabitacion: VMHabitacion,
-    vmReserva: VMReserva,
-    vmAuth: VMAuth
-) {
-    val navController = rememberNavController()
+    //funcion que crea un usuario administrador justo al iniciar la aplicacion
+    private fun crearAdminInicial() {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val usuarios = databaseU.usuarioLoggeadoDAO().getAllUsuariosLoggeados().first()
 
-    NavHost(
-        navController = navController,
-        startDestination = Routes.ListaHabitaciones.route
-    ) {
-        composable(Routes.ListaHabitaciones.route) {
-            V1ListaHabitaciones(
-                navController = navController,
-                vmHabitacion = vmHabitacion,
-                vmAuth = vmAuth
-            )
-        }
+            // Si no hay ningún admin, crear uno
+            val hayAdmin = usuarios.any { it.role == UserRole.ADMIN }
 
-        composable(Routes.Login.route) {
-            VLogin(
-                navController = navController,
-                vmAuth = vmAuth
-            )
-        }
-
-        composable(Routes.Register.route) {
-            VRegister(
-                navController = navController,
-                vmAuth = vmAuth
-            )
-        }
-
-        composable(
-            route = Routes.Habitacion.route,
-            arguments = listOf(navArgument("idHabitacion") { type = NavType.IntType })
-        ) { backStackEntry ->
-            val idHabitacion = backStackEntry.arguments?.getInt("idHabitacion") ?: 0
-            V2Habitacion(
-                navController = navController,
-                vmHabitacion = vmHabitacion,
-                vmAuth = vmAuth,
-                idHabitacion = idHabitacion
-            )
-        }
-
-        composable(
-            route = Routes.Reserva.route,
-            arguments = listOf(navArgument("idHabitacion") { type = NavType.IntType })
-        ) { backStackEntry ->
-            val idHabitacion = backStackEntry.arguments?.getInt("idHabitacion") ?: 0
-            V3Reserva(
-                navController = navController,
-                vmReserva = vmReserva,
-                vmAuth = vmAuth,
-                vmHabitacion = vmHabitacion,
-                idHabitacion = idHabitacion
-            )
-        }
-
-        composable(Routes.ListaReservas.route) {
-            V4ListaReservas(
-                navController = navController,
-                vmReserva = vmReserva,
-                vmAuth = vmAuth,
-                vmHabitacion = vmHabitacion
-            )
-        }
-
-        composable(
-            route = Routes.CancelarReserva.route,
-            arguments = listOf(navArgument("idReserva") { type = NavType.IntType })
-        ) { backStackEntry ->
-            val idReserva = backStackEntry.arguments?.getInt("idReserva") ?: 0
-            V5CancelarReserva(
-                navController = navController,
-                vmReserva = vmReserva,
-                idReserva = idReserva
-            )
-        }
-
-        composable(Routes.AñadirHabitacion.route) {
-            VAñadirHabitacion(
-                navController = navController,
-                vmHabitacion = vmHabitacion,
-                vmAuth = vmAuth
-            )
+            if (!hayAdmin) {
+                val admin = UsuarioLoggeado(
+                    nombre = "admin",
+                    contraseña = "admin",
+                    role = UserRole.ADMIN
+                )
+                databaseU.usuarioLoggeadoDAO().addUsuarioLoggeado(admin)
+            }
         }
     }
-}
-
-sealed class Routes(val route: String) {
-    object ListaHabitaciones : Routes("lista_habitaciones")
-    object Login : Routes("login")
-    object Register : Routes("register")
-
-    object Habitacion : Routes("habitacion/{idHabitacion}") {
-        fun createRoute(idHabitacion: Int) = "habitacion/$idHabitacion"
-    }
-
-    object Reserva : Routes("reserva/{idHabitacion}") {
-        fun createRoute(idHabitacion: Int) = "reserva/$idHabitacion"
-    }
-
-    object ListaReservas : Routes("lista_reservas")
-
-    object CancelarReserva : Routes("cancelar_reserva/{idReserva}") {
-        fun createRoute(idReserva: Int) = "cancelar_reserva/$idReserva"
-    }
-
-    object AñadirHabitacion : Routes("añadir_habitacion")
 }

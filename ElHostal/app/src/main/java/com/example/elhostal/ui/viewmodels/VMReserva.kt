@@ -2,7 +2,6 @@ package com.example.elhostal.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.room.util.copy
 import com.example.elhostal.data.repositories.RepositoryReservas
 import com.example.elhostal.domain.entities.Reserva
 import kotlinx.coroutines.Dispatchers
@@ -41,18 +40,18 @@ class VMReserva(
     }
 
     //cancela una reserva marcandola como cancelada
-    fun cancelarReserva(reserva: Reserva) {
+    fun cancelarReserva(reserva: Reserva?) {
+        reserva?.isCancelada = true
         viewModelScope.launch(Dispatchers.IO) {
-            val reservaActualizada = reserva.copy(isCancelada = true)
-            reservasRepo.cancelarReserva(reservaActualizada)
+            reservasRepo.cancelarReserva(reserva)
         }
     }
 
     //libera una reserva marcandola como libre
-    fun liberarReserva(reserva: Reserva) {
+    fun liberarReserva(reserva: Reserva?) {
+        reserva?.isLibre = true
         viewModelScope.launch(Dispatchers.IO) {
-            val reservaActualizada = reserva.copy(isLibre = true)
-            reservasRepo.liberarReserva(reservaActualizada)
+            reservasRepo.liberarReserva(reserva)
         }
     }
 

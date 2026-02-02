@@ -16,14 +16,22 @@ data class RepositoryReservas(private val reservaDAO: ReservaDAO) {
         return reservaDAO.addReserva(reserva)
     }
 
-    //cancelar una reserva
-    fun cancelarReserva(reserva: Reserva): Int {
-        return reservaDAO.cancelReserva(reserva)
+    //cancelar una reserva - maneja el nullable aquí
+    fun cancelarReserva(reserva: Reserva?): Int {
+        return if (reserva != null) {
+            reservaDAO.cancelReserva(reserva)
+        } else {
+            0
+        }
     }
 
-    //liberar una reserva
-    fun liberarReserva(reserva: Reserva): Int {
-        return reservaDAO.liberarReserva(reserva)
+    //liberar una reserva - maneja el nullable aquí
+    fun liberarReserva(reserva: Reserva?): Int {
+        return if (reserva != null) {
+            reservaDAO.liberarReserva(reserva)
+        } else {
+            0
+        }
     }
 
     //obtener todas las reservas de un usuario en concreto
