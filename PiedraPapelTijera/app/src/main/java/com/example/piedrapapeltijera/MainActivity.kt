@@ -28,6 +28,9 @@ import kotlin.getValue
 
 
 class MainActivity : ComponentActivity() {
+    companion object {
+        lateinit var database: JugadasDatabase
+    }
 
     //Añade una variable que cargue el repositorio en modo Lazy (lateinit o lazy)
     private val repositoryJugadas by lazy { RepositoryJugadas(database.jugadaDao()) }
@@ -35,10 +38,6 @@ class MainActivity : ComponentActivity() {
     //Instanciamos el ViewModel
     private val viewmodel: VMJugadas by viewModels {
         JugadasFactory(repositoryJugadas)
-    }
-
-    companion object {
-        lateinit var database: JugadasDatabase
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
